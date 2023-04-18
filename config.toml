@@ -1,0 +1,47 @@
+theme = "base16_default" # "noctis_bordo" # "onedark"
+
+[editor]
+auto-completion = false
+line-number = "relative"
+mouse = false
+shell = ["zsh","-c"]
+true-color = true
+
+[editor.statusline]
+right = ["diagnostics", "selections", "position", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
+
+# [editor.whitespace]
+# render = "all"
+# or control each character
+
+# [editor.whitespace.render]
+# space = "all"
+# tab = "all"
+# newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+tab = "→"
+newline = "⏎"
+tabpad = "·" # Tabs will look like "→···" (depending on tab width)
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[keys.normal]
+A-w = ":w"
+A-q = ":q"
+
+[keys.insert]
+j = { j = "normal_mode"} # Maps `jj` to exit insert mode
+C-a = "goto_line_start"
+C-e = "goto_line_end_newline"
+
