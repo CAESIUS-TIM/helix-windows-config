@@ -1,47 +1,99 @@
-theme = "base16_default" # "noctis_bordo" # "onedark"
+# theme = "base16_default" # "noctis_bordo" # "onedark"
+# theme = "tokyonight_storm"
+theme = "dark_plus"
 
 [editor]
-auto-completion = false
-line-number = "relative"
 mouse = false
-shell = ["zsh","-c"]
+# shell = ["zsh", "-c"]
+line-number = "relative"
+cursorline = true
+rulers = [80]
 true-color = true
+undercurl = true
+# bufferline = "multiple"
+bufferline = "always"
+color-modes = true
 
 [editor.statusline]
-right = ["diagnostics", "selections", "position", "position-percentage", "file-encoding", "file-line-ending", "file-type"]
-
-# [editor.whitespace]
-# render = "all"
-# or control each character
-
-# [editor.whitespace.render]
-# space = "all"
-# tab = "all"
-# newline = "none"
-
-[editor.whitespace.characters]
-space = "·"
-nbsp = "⍽"
-tab = "→"
-newline = "⏎"
-tabpad = "·" # Tabs will look like "→···" (depending on tab width)
-
-[editor.indent-guides]
-render = true
-character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
-skip-levels = 1
+left = [
+  "mode",
+  "spinner",
+  # "separator", 
+  "version-control",
+  # "separator",
+]
+center = ["file-name", "file-modification-indicator"]
+right = [
+  "diagnostics",
+  # "separator",           # <-
+  "selections",
+  # "separator",           # <-
+  "position",
+  "position-percentage",
+  "spacer",              # <-[]
+  # "separator",           # <-
+  "file-encoding",
+  "file-line-ending",
+  "file-type",
+]
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
 
-[keys.normal]
-A-w = ":w"
-A-q = ":q"
+[editor.file-picker]
+hidden = true
+git-ignore = true
+
+[editor.whitespace.render]
+nbsp = "all"
+tab = "all"
+newline = "none"
+
+[editor.whitespace.characters]
+space = "·"
+nbsp = "⍽"
+tab = "→"
+newline = "⏎"
+tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
+
+[editor.indent-guides]
+render = true
+character = "╎" # Some characters that work well: "▏", "┆", "┊", "⸽"
+skip-levels = 1
+
+[editor.soft-wrap]
+enable = true
+
+################################################################################
+### Key mapping
+################################################################################
 
 [keys.insert]
-j = { j = "normal_mode"} # Maps `jj` to exit insert mode
+# Maps `jj` to exit insert mode as vim
+# j = { j = ["normal_mode", "move_char_left"] }
+j = { j = "normal_mode" }
 C-a = "goto_line_start"
 C-e = "goto_line_end_newline"
 
+[keys.normal]
+esc = ["collapse_selection", "keep_primary_selection"]
+A-w = ":w"
+A-q = ":q"
+# F5 = ""
+
+[keys.normal."space".t]
+c = ":toggle search.smart-case"
+l = ":toggle cursorline"
+r = ["split_selection_on_newline", ":rsort"]
+s = ["split_selection_on_newline", ":sort"]
+d = ":theme dark_plus"
+# nord_light
+# papercolor-light
+o = ":theme spacebones_light"
+t = ":sh tree -I \"*.cpython-310.*\" -I \"__pycache__\" -I \"log\""
+
+[keys.normal."space".i]
+i = [":toggle file-picker.hidden", ":get file-picker.hidden"]
+g = [":toggle file-picker.git-ignore", ":get file-picker.git-ignore"]

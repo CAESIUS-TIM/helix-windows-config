@@ -1,0 +1,38 @@
+[[language]]
+name = "lua"
+auto-format = false
+language-server = { command = "lua-language-server", args = ["--stdio"] }
+
+[[language]]
+name = "python"
+roots = ["pyproject.toml"]
+indent = { tab-width = 4, unit = "    " }
+language-server = { command = "pyright-langserver", args = ["--stdio"] }
+config = {}                                                              # <- this is the important line
+formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
+
+[[language]]
+name = "config"
+scope = "source.config"
+injection-regex = "^(conf|env(\\.\\w+)?)$"
+file-types = ["env", "conf", "config"]
+roots = []
+comment-token = "#"
+
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+auto-format = true
+
+[language.debugger]
+name = "debugpy"
+transport = "stdio"
+command = "python"
+args = ["-m", "debugpy.adapter"]
+
+[[language.debugger.templates]]
+name = "source"
+request = "launch"
+completion = [{ name = "entrypoint", completion = "filename", default = "." }]
+args = { mode = "debug", program = "{0}" }
