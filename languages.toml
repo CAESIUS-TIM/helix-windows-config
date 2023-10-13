@@ -1,18 +1,9 @@
-[[language]]
-name = "lua"
-auto-format = false
-language-server = { command = "lua-language-server", args = ["--stdio"] }
+# [[language]]
+# name = "lua"
+# auto-format = false
+# language-server = { command = "lua-language-server", args = ["--stdio"] }
 
-[[language]]
-name = "python"
-roots = ["pyproject.toml"]
-indent = { tab-width = 4, unit = "    " }
-language-server = { command = "pyright-langserver", args = ["--stdio"] }
-config = {}                                                              # <- this is the important line
-formatter = { command = "black", args = ["--quiet", "-"] }
-auto-format = true
-
-[[language]]
+[[language]] # TODO: where come from?
 name = "config"
 scope = "source.config"
 injection-regex = "^(conf|env(\\.\\w+)?)$"
@@ -21,18 +12,107 @@ roots = []
 comment-token = "#"
 
 [[language]]
+name = "c"
+scope = "source.c"
+file-types = ["c","h"]
+comment-token = "//"
+indent = { tab-width = 4, unit = "    " }
+language-server = { command = "clangd", args = ["--fallback-style=WebKit"] }
+# formatter = { command = "clang-format", args = ["--style=\"{BasedOnStyle: Google, IndentWidth: 4, TabWidth: 4}\"", "-"] }
+
+[[language]]
+name = "cpp"
+scope = "source.cpp"
+file-types = ["cc","cxx","cpp"]
+comment-token = "//"
+language-server = { command = "clangd", args = ["--fallback-style=WebKit"] }
+indent = { tab-width = 4, unit = "    " }
+
+[[language]] # TODO: different between json & jsonc
+name = "json"
+scope = "source.json"
+file-types = ["json","keymaps"]
+
+[[language]] # software custom
+name = "lfrc"
+scope = "source.lfrc"
+file-types = ["lfrc"]
+comment-token = "#"
+roots = []
+indent = { tab-width = 4, unit = "    " }
+
+[[language]]
+name = "python"
+comment-token = "#"
+file-types = ["py","pyi","py3","pyw","ptl",".pythonstartup",".pythonrc","SConstruct"]
+indent = { tab-width = 4, unit = "    " }
+injection-regex = "python"
+roots = ["setup.py", "setup.cfg", "pyproject.toml"]
+scope = "source.python"
+shebangs = ["python"]
+language-server = { command = "pyright-langserver", args = ["--stdio"] }
+# will get "Async jobs timed out" errors if this empty config is not added
+config = {}
+auto-format = true
+formatter = { command = "black", args = ["--quiet", "-"] }
+
+# [language.debugger]
+# name = "debugpy"
+# transport = "stdio"
+# command = "python"
+# args = ["-m", "debugpy.adapter"]
+
+# [[language.debugger.templates]]
+# name = "source"
+# request = "launch"
+# completion = [{ name = "entrypoint", completion = "filename", default = "." }]
+# args = { mode = "debug", program = "{0}" }
+
+[[language]]
+name = "pwsh"
+scope = "source.ps1"
+roots = [".git"]
+file-types = ["ps1"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+language-server = { command = "pwsh", args = ["-NoLogo", "-NoProfile", "-Command", "/usr/local/bin/powershell-es/PowerShellEditorServices/Start-EditorServices.ps1 -BundledModulesPath /usr/local/bin/powershell-es -SessionDetailsPath /usr/local/bin/powershell-es/powershell_es.sessions.json -LogPath /usr/local/bin/powershell-es/powershell_es.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal"] }
+
+[[language]]
+name = "rust"
+indent = { tab-width = 4, unit = "    " }
+
+# If this doesn't work, you might be on a older release version which handles this differently.
+# Try using [language.config.check] instead of [language-server.rust-analyzer.config.check]
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language.debugger]
+command = "codelldb"
+name = "codelldb"
+port-arg = "--port {}"
+transport = "tcp"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+[[language.debugger.templates.completion]]
+completion = "filename"
+name = "binary"
+
+[language.debugger.templates.args]
+program = "{0}"
+runInTerminal = true
+
+[language.config]
+inlayHints.bindingModeHints.enable = true
+inlayHints.closingBraceHints.minLines = 10
+inlayHints.closureReturnTypeHints.enable = "with_block"
+inlayHints.discriminantHints.enable = "fieldless"
+inlayHints.lifetimeElisionHints.enable = "skip_trivial"
+inlayHints.typeHints.hideClosureInitialization = false
+
+[[language]]
 name = "toml"
 formatter = { command = "taplo", args = ["fmt", "-"] }
 auto-format = true
 
-[language.debugger]
-name = "debugpy"
-transport = "stdio"
-command = "python"
-args = ["-m", "debugpy.adapter"]
-
-[[language.debugger.templates]]
-name = "source"
-request = "launch"
-completion = [{ name = "entrypoint", completion = "filename", default = "." }]
-args = { mode = "debug", program = "{0}" }
