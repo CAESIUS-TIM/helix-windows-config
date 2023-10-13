@@ -1,10 +1,8 @@
-# theme = "base16_default" # "noctis_bordo" # "onedark"
-# theme = "tokyonight_storm"
 theme = "dark_plus"
 
 [editor]
 mouse = false
-# shell = ["zsh", "-c"]
+shell = ["fish", "-c"]
 line-number = "relative"
 cursorline = true
 rulers = [80]
@@ -13,6 +11,10 @@ undercurl = true
 # bufferline = "multiple"
 bufferline = "always"
 color-modes = true
+
+[editor.lsp]
+display-messages = true
+display-inlay-hints = true
 
 [editor.statusline]
 left = [
@@ -25,17 +27,20 @@ left = [
 center = ["file-name", "file-modification-indicator"]
 right = [
   "diagnostics",
-  # "separator",           # <-
+  "workspace-diagnostics",
+  "separator",           # <-
   "selections",
-  # "separator",           # <-
+  "primary-selection-length",
+  "separator",           # <-
   "position",
   "position-percentage",
   "spacer",              # <-[]
-  # "separator",           # <-
+  "separator",           # <-
   "file-encoding",
   "file-line-ending",
   "file-type",
 ]
+separator = ""
 
 [editor.cursor-shape]
 insert = "bar"
@@ -74,26 +79,98 @@ enable = true
 # Maps `jj` to exit insert mode as vim
 # j = { j = ["normal_mode", "move_char_left"] }
 j = { j = "normal_mode" }
-C-a = "goto_line_start"
+C-a = "goto_first_nonwhitespace"
 C-e = "goto_line_end_newline"
+# C-f = "move_char_right"
+# C-b = "move_char_left"
+# A-f = ["move_next_word_end"] # BUG
+# A-b = ["move_prev_word_start"] # BUG
+# C-u, C-k, C-h, C-d, C-w, A-d
+
+# "C-left" = "move_prev_word_end"
+# "A-f" = "move_next_word_start"
+# "C-right" = "move_next_word_start"
+# "C-space" = "completion"
+# "A-<" = "goto_file_start"
+# "A->" = "goto_file_end"
+# "pageup" = "page_up"
+# "pagedown" = "page_down"
+# "home" = "goto_line_start"
+# "end" = "goto_line_end_newline"
+# "C-;" = [
+#   "save_selection",
+#   "insert_at_line_end",
+#   ":append-output echo ';'",
+#   "delete_char_forward",
+#   "jump_backward",
+# ]
+# "A-left" = "goto_line_start"
+# "A-right" = "goto_line_start"
+# " " = ["collapse_selection", ":insert-output printf ' '", "move_char_right"]
 
 [keys.normal]
+ret = ["move_line_down", "goto_first_nonwhitespace"]
 esc = ["collapse_selection", "keep_primary_selection"]
-A-w = ":w"
-A-q = ":q"
-# F5 = ""
 
-[keys.normal."space".t]
+# A-up = [
+#   "keep_primary_selection",
+#   "extend_line",
+#   "yank",
+#   "move_line_up",
+#   "open_above",
+#   "normal_mode",
+#   "replace_with_yanked",
+#   "move_line_down",
+#   "move_line_down",
+#   "extend_line",
+#   "delete_selection",
+#   "move_line_up",
+#   "move_line_up",
+# ]
+# A-down = [
+#   "keep_primary_selection",
+#   "extend_line",
+#   "delete_selection",
+#   "paste_after",
+#   "move_line_down",
+# ]
+
+# F5 = ""
+A-x = ["extend_line_up", "extend_to_line_bounds", "select_mode"]
+
+[keys.select]
+A-x = ["extend_line_up", "extend_to_line_bounds", "select_mode"]
+
+[keys.normal."space".c] # conifg
+o = ":config-open"
+r = ":config-reload"
+d = ":sh git diff"
+
+[keys.normal."space"."space"]
 c = ":toggle search.smart-case"
+i = ":toggle lsp.display-inlay-hints"
 l = ":toggle cursorline"
 r = ["split_selection_on_newline", ":rsort"]
 s = ["split_selection_on_newline", ":sort"]
-d = ":theme dark_plus"
+w = ":w"
+q = ":q"
+
+[keys.normal."space".t] # function
+h = ":theme dark_plus"
 # nord_light
 # papercolor-light
-o = ":theme spacebones_light"
-t = ":sh tree -I \"*.cpython-310.*\" -I \"__pycache__\" -I \"log\""
+H = ":theme spacebones_light"
+s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\""
+d = ":insert-output Get-Date -Format \"yyyy-MM-dd\""
+t = ":insert-output Get-Date -Format \"HH:mm:ss\""
+e = ":insert-output echo \"timxing2000@foxmail.com\""
 
 [keys.normal."space".i]
-i = [":toggle file-picker.hidden", ":get file-picker.hidden"]
-g = [":toggle file-picker.git-ignore", ":get file-picker.git-ignore"]
+i = [":toggle file-picker.hidden"]
+g = [":toggle file-picker.git-ignore"]
+
+[keys.normal."space".l] # lang
+r = ":sh cargo run"
+b = { d = ":sh cargo build", r = ":sh cargo build --release" }
+c = ":sh cargo check"
+t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored" }
