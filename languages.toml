@@ -6,11 +6,33 @@ name = "c"
 indent = { tab-width = 4, unit = "    " }
 
 ################################################################################
+# config
+################################################################################
+[[language]] # TODO: where come from?
+name = "config"
+scope = "source.config"
+injection-regex = "^(conf|env(\\.\\w+)?)$"
+file-types = ["env", "conf", "config"]
+roots = []
+comment-token = "#"
+
+################################################################################
 # json
 ################################################################################
 [[language]]
 name = "json"
 # config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
+
+################################################################################
+# lfrc
+################################################################################
+[[language]] # software custom
+name = "lfrc"
+scope = "source.lfrc"
+file-types = ["lfrc"]
+comment-token = "#"
+roots = []
+indent = { tab-width = 4, unit = "    " }
 
 ################################################################################
 # powershell
