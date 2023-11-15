@@ -58,6 +58,7 @@ args = [
 [[grammar]]
 name = "powershell"
 source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
+# source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "48f1a74725092281bd2b1606ad302100ffa537a9" }
 
 ################################################################################
 # python
