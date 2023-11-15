@@ -178,6 +178,6 @@ g = [":toggle file-picker.git-ignore"]
 
 [keys.normal."space".l] # lang
 r = ":sh cargo run"
-b = { d = ":sh cargo build", r = ":sh cargo build --release" }
-c = ":sh cargo clippy"
-t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored" }
+b = { u = ":sh cargo build", r = ":sh cargo build --release" }
+c = ":sh cargo clippy || $null"
+t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", y = ":sh typos || $null" }
