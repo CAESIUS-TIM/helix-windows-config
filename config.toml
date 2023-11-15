@@ -2,7 +2,14 @@ theme = "dark_plus"
 
 [editor]
 mouse = false
-shell = ["pwsh.exe","-NoLogo","-NoProfile","-NoProfileLoadTime","-Command","$PSStyle.OutputRendering='PlainText';"]
+shell = [
+  "pwsh.exe",
+  "-NoLogo",
+  "-NoProfile",
+  "-NoProfileLoadTime",
+  "-Command",
+  "$PSStyle.OutputRendering='PlainText';",
+]
 line-number = "relative"
 cursorline = true
 rulers = [80]
@@ -28,14 +35,14 @@ center = ["file-name", "file-modification-indicator"]
 right = [
   "diagnostics",
   "workspace-diagnostics",
-  "separator",           # <-
+  "separator",                # <-
   "selections",
   "primary-selection-length",
-  "separator",           # <-
+  "separator",                # <-
   "position",
   "position-percentage",
-  "spacer",              # <-[]
-  "separator",           # <-
+  "spacer",                   # <-[]
+  "separator",                # <-
   "file-encoding",
   "file-line-ending",
   "file-type",
@@ -172,5 +179,5 @@ g = [":toggle file-picker.git-ignore"]
 [keys.normal."space".l] # lang
 r = ":sh cargo run"
 b = { d = ":sh cargo build", r = ":sh cargo build --release" }
-c = ":sh cargo check"
+c = ":sh cargo clippy"
 t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored" }
