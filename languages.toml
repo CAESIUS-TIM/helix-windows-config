@@ -1,8 +1,13 @@
-# [[language]]
-# name = "lua"
-# auto-format = false
-# language-server = { command = "lua-language-server", args = ["--stdio"] }
+################################################################################
+# c
+################################################################################
+[[language]]
+name = "c"
+indent = { tab-width = 4, unit = "    " }
 
+################################################################################
+# config
+################################################################################
 [[language]] # TODO: where come from?
 name = "config"
 scope = "source.config"
@@ -11,28 +16,16 @@ file-types = ["env", "conf", "config"]
 roots = []
 comment-token = "#"
 
+################################################################################
+# json
+################################################################################
 [[language]]
-name = "c"
-scope = "source.c"
-file-types = ["c","h"]
-comment-token = "//"
-indent = { tab-width = 4, unit = "    " }
-language-server = { command = "clangd", args = ["--fallback-style=WebKit"] }
-# formatter = { command = "clang-format", args = ["--style=\"{BasedOnStyle: Google, IndentWidth: 4, TabWidth: 4}\"", "-"] }
-
-[[language]]
-name = "cpp"
-scope = "source.cpp"
-file-types = ["cc","cxx","cpp"]
-comment-token = "//"
-language-server = { command = "clangd", args = ["--fallback-style=WebKit"] }
-indent = { tab-width = 4, unit = "    " }
-
-[[language]] # TODO: different between json & jsonc
 name = "json"
-scope = "source.json"
-file-types = ["json","keymaps"]
+# config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
 
+################################################################################
+# lfrc
+################################################################################
 [[language]] # software custom
 name = "lfrc"
 scope = "source.lfrc"
@@ -41,53 +34,54 @@ comment-token = "#"
 roots = []
 indent = { tab-width = 4, unit = "    " }
 
+################################################################################
+# powershell
+################################################################################
+[[language]]
+name = "powershell"
+scope = "source.ps1"
+file-types = ["ps1", "psm1"]
+roots = [".git"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["powershell-editor-services"]
+
+[language-server.powershell-editor-services]
+command = "pwsh"
+args = [
+  "-NoLogo",
+  "-NoProfile",
+  "-Command",
+  "C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices\\Start-EditorServices.ps1 -BundledModulesPath C:\\projects\\powershell\\PowerShellEditorServices -SessionDetailsPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.sessions.json -LogPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal",
+]
+
+[[grammar]]
+name = "powershell"
+source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
+# source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "48f1a74725092281bd2b1606ad302100ffa537a9" }
+
+################################################################################
+# python
+################################################################################
 [[language]]
 name = "python"
-comment-token = "#"
-file-types = ["py","pyi","py3","pyw","ptl",".pythonstartup",".pythonrc","SConstruct"]
 indent = { tab-width = 4, unit = "    " }
-injection-regex = "python"
-roots = ["setup.py", "setup.cfg", "pyproject.toml"]
-scope = "source.python"
-shebangs = ["python"]
-language-server = { command = "pyright-langserver", args = ["--stdio"] }
-# will get "Async jobs timed out" errors if this empty config is not added
-config = {}
-auto-format = true
 formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
 
-# [language.debugger]
-# name = "debugpy"
-# transport = "stdio"
-# command = "python"
-# args = ["-m", "debugpy.adapter"]
-
-# [[language.debugger.templates]]
-# name = "source"
-# request = "launch"
-# completion = [{ name = "entrypoint", completion = "filename", default = "." }]
-# args = { mode = "debug", program = "{0}" }
-
-[[language]]
-name = "pwsh"
-scope = "source.ps1"
-roots = [".git"]
-file-types = ["ps1"]
-comment-token = "#"
-indent = { tab-width = 4, unit = "    " }
-language-server = { command = "pwsh", args = ["-NoLogo", "-NoProfile", "-Command", "/usr/local/bin/powershell-es/PowerShellEditorServices/Start-EditorServices.ps1 -BundledModulesPath /usr/local/bin/powershell-es -SessionDetailsPath /usr/local/bin/powershell-es/powershell_es.sessions.json -LogPath /usr/local/bin/powershell-es/powershell_es.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal"] }
-
+################################################################################
+# rust
+################################################################################
 [[language]]
 name = "rust"
 indent = { tab-width = 4, unit = "    " }
+language-servers = ["rust-analyzer"]
 
-# If this doesn't work, you might be on a older release version which handles this differently.
-# Try using [language.config.check] instead of [language-server.rust-analyzer.config.check]
 [language-server.rust-analyzer.config.check]
 command = "clippy"
 
 [language.debugger]
-command = "codelldb"
+command = "C:/Users/26523/Downloads/codelldb/codelldb_adapter/adapter/codelldb.exe"
 name = "codelldb"
 port-arg = "--port {}"
 transport = "tcp"
@@ -103,16 +97,24 @@ name = "binary"
 program = "{0}"
 runInTerminal = true
 
-[language.config]
-inlayHints.bindingModeHints.enable = true
-inlayHints.closingBraceHints.minLines = 10
-inlayHints.closureReturnTypeHints.enable = "with_block"
-inlayHints.discriminantHints.enable = "fieldless"
-inlayHints.lifetimeElisionHints.enable = "skip_trivial"
-inlayHints.typeHints.hideClosureInitialization = false
-
+################################################################################
+# toml
+################################################################################
 [[language]]
 name = "toml"
 formatter = { command = "taplo", args = ["fmt", "-"] }
 auto-format = true
 
+################################################################################
+# yaml
+################################################################################
+[[language]]
+name = "yaml"
+
+[language-server.yaml-language-server.config.yaml]
+format = { enable = true }
+validation = true
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
+"https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-tasks.json" = "roles/{tasks,handlers}/*.{yml,yaml}"
