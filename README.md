@@ -1,2 +1,3 @@
-# [helix](https://helix-editor.com/)
-helix-config
+# [Helix Windows Config](https://helix-editor.com/)
+
+- shell: [pwsh](https://github.com/PowerShell/PowerShell)
