@@ -1,0 +1,97 @@
+################################################################################
+# c
+################################################################################
+[[language]]
+name = "c"
+indent = { tab-width = 4, unit = "    " }
+
+################################################################################
+# json
+################################################################################
+[[language]]
+name = "json"
+# config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
+
+################################################################################
+# powershell
+################################################################################
+[[language]]
+name = "powershell"
+scope = "source.ps1"
+file-types = ["ps1", "psm1"]
+roots = [".git"]
+comment-token = "#"
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["powershell-editor-services"]
+
+[language-server.powershell-editor-services]
+command = "pwsh"
+args = [
+  "-NoLogo",
+  "-NoProfile",
+  "-Command",
+  "C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices\\Start-EditorServices.ps1 -BundledModulesPath C:\\projects\\powershell\\PowerShellEditorServices -SessionDetailsPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.sessions.json -LogPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal",
+]
+
+[[grammer]]
+name = "powershell"
+source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
+
+################################################################################
+# python
+################################################################################
+[[language]]
+name = "python"
+indent = { tab-width = 4, unit = "    " }
+formatter = { command = "black", args = ["--quiet", "-"] }
+auto-format = true
+
+################################################################################
+# rust
+################################################################################
+[[language]]
+name = "rust"
+indent = { tab-width = 4, unit = "    " }
+language-servers = ["rust-analyzer"]
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language.debugger]
+command = "C:/Users/26523/Downloads/codelldb/codelldb_adapter/adapter/codelldb.exe"
+name = "codelldb"
+port-arg = "--port {}"
+transport = "tcp"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+[[language.debugger.templates.completion]]
+completion = "filename"
+name = "binary"
+
+[language.debugger.templates.args]
+program = "{0}"
+runInTerminal = true
+
+################################################################################
+# toml
+################################################################################
+[[language]]
+name = "toml"
+formatter = { command = "taplo", args = ["fmt", "-"] }
+auto-format = true
+
+################################################################################
+# yaml
+################################################################################
+[[language]]
+name = "yaml"
+
+[language-server.yaml-language-server.config.yaml]
+format = { enable = true }
+validation = true
+
+[language-server.yaml-language-server.config.yaml.schemas]
+"https://json.schemastore.org/github-workflow.json" = ".github/workflows/*.{yml,yaml}"
+"https://raw.githubusercontent.com/ansible-community/schemas/main/f/ansible-tasks.json" = "roles/{tasks,handlers}/*.{yml,yaml}"
