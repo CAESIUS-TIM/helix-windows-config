@@ -81,7 +81,7 @@ language-servers = ["rust-analyzer"]
 command = "clippy"
 
 [language.debugger]
-command = "C:/Users/26523/Downloads/codelldb/codelldb_adapter/adapter/codelldb.exe"
+command = "codelldb"
 name = "codelldb"
 port-arg = "--port {}"
 transport = "tcp"
