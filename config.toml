@@ -30,8 +30,10 @@ left = [
   # "separator", 
   "version-control",
   # "separator",
+  "file-name",
+  "file-modification-indicator",
 ]
-center = ["file-name", "file-modification-indicator"]
+center = []
 right = [
   "diagnostics",
   "workspace-diagnostics",
