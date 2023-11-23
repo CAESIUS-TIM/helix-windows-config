@@ -182,4 +182,4 @@ g = [":toggle file-picker.git-ignore"]
 r = ":sh cargo run"
 b = { u = ":sh cargo build", r = ":sh cargo build --release" }
 c = ":sh cargo clippy || $null"
-t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", y = ":sh typos || $null" }
+t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null", y = ":sh typos || $null" }
