@@ -35,6 +35,21 @@ roots = []
 indent = { tab-width = 4, unit = "    " }
 
 ################################################################################
+# markdown
+################################################################################
+[[language]]
+name = "markdown"
+roots = [".marksman.toml"]
+language-servers = ["marksman", "ltex-ls"]
+indent = { tab-width = 2, unit = "  " }
+formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
+auto-format = true
+
+[language-server.ltex-ls.config.ltex]
+disabledRules = { "en-US" = ["PROFANITY"] }
+dictionary = { "en-US" = ["builtin", "nonebot", "todo", "eval", "jupyter"] }
+
+################################################################################
 # powershell
 ################################################################################
 [[language]]
