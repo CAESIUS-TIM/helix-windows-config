@@ -35,6 +35,26 @@ roots = []
 indent = { tab-width = 4, unit = "    " }
 
 ################################################################################
+# lua
+################################################################################
+[[language]]
+name = "lua"
+indent = { tab-width = 2, unit = "  " }
+auto-format = true
+
+[language.formatter]
+command = "stylua"
+args = [
+  "--indent-width",
+  "2",
+  "--indent-type",
+  "Spaces",
+  "--column-width",
+  "80",
+  "-",
+]
+
+################################################################################
 # markdown
 ################################################################################
 [[language]]
@@ -80,11 +100,22 @@ source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "
 ################################################################################
 [[language]]
 name = "python"
-language-servers = ["pyright"]
+language-servers = ["pyright", "ruff"]
 indent = { tab-width = 4, unit = "    " }
-formatter = { command = "black", args = ["--quiet", "-"] }
 auto-format = true
 
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+[language-server.ruff.config.settings]
+args = ["--ignore", "E501"]
+
+[language.formatter]
+command = "black"
+args = ["--line-length", "80", "--quiet", "-"]
 ################################################################################
 # rust
 ################################################################################
