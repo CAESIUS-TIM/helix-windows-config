@@ -51,6 +51,8 @@ args = [
   "Spaces",
   "--column-width",
   "80",
+  "--quote-style",
+  "ForceSingle",
   "-",
 ]
 
