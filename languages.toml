@@ -4,23 +4,33 @@
 [[language]]
 name = "c"
 indent = { tab-width = 4, unit = "    " }
+auto-format = true
+
+################################################################################
+# cpp
+################################################################################
+[[language]]
+name = "cpp"
+indent = { tab-width = 4, unit = "    " }
+auto-format = true
 
 ################################################################################
 # config
 ################################################################################
 [[language]] # TODO: where come from?
 name = "config"
-scope = "source.config"
-injection-regex = "^(conf|env(\\.\\w+)?)$"
-file-types = ["env", "conf", "config"]
-roots = []
 comment-token = "#"
+file-types = ["env", "conf", "config"]
+injection-regex = "^(conf|env(\\.\\w+)?)$"
+roots = []
+scope = "source.config"
 
 ################################################################################
 # json
 ################################################################################
 [[language]]
 name = "json"
+auto-format = true
 # config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
 
 ################################################################################
@@ -102,12 +112,12 @@ source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "
 ################################################################################
 [[language]]
 name = "python"
-language-servers = ["pyright", "ruff"]
 indent = { tab-width = 4, unit = "    " }
+language-servers = ["pyright", "ruff"]
 auto-format = true
 
 [language-server.pyright.config.python.analysis]
-typeCheckingMode = "basic"
+typeCheckingMode = "strict" # ["off", "basic", "strict"]
 
 [language-server.ruff]
 command = "ruff-lsp"
@@ -116,8 +126,9 @@ command = "ruff-lsp"
 args = ["--ignore", "E501"]
 
 [language.formatter]
-command = "black"
-args = ["--line-length", "80", "--quiet", "-"]
+command = "cmd"
+args = ["/c", "isort --profile black -l 80 -q - | black -l 80 -q -"]
+
 ################################################################################
 # rust
 ################################################################################
@@ -152,6 +163,7 @@ runInTerminal = true
 [[language]]
 name = "toml"
 formatter = { command = "taplo", args = ["fmt", "-"] }
+# language-servers = ["taplo", "ltex-ls"]
 auto-format = true
 
 ################################################################################
