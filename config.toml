@@ -1,23 +1,68 @@
-theme = "dark_plus"
+# # opacity
+# ## dark
+# - adwaita-dark
+# - ayu_dark
+# - catppuccin_frappe
+# - darcula
+# - darcula-solid
+# - dark_plus
+# - everforest_dark
+# - github_dark
+# - github_dark_colorblind
+# - github_dark_dimmed
+# - gruvbox
+# - gruvbox_dark_hard
+# - gruvbox_dark_soft
+# - hex_toxic
+# - new_moon
+# - nightfox
+# - noctis
+# - nord
+# - nord-night
+# - onedark
+# - onedarker
+# - snazzy (primary selection is very clear)
+# - solarized_dark
+# - sonokai
+# ## light
+# no theme is ok... QwQ
+# - cyan_light
+#
+# # not opacity
+# ## dark
+# - catppuccin_frappe
+# - dark_plus
+# TODO
+# ## light
+# - nord_light
+# - papercolor-light
+# - spacebones_light
+#
+# # interesting
+# - base16_transparent
+# - heisenberg
+theme = "darcula-solid"
+# theme = "snazzy"
+# theme = "catppuccin_frappe"
+# theme = "dark_plus"
 
 [editor]
+# bufferline = "always"
+bufferline = "multiple"
+color-modes = true
+cursorline = true
+line-number = "relative"
 mouse = false
+rulers = [80, 120]
 shell = [
   "pwsh.exe",
   "-NoLogo",
-  "-NoProfile",
   "-NoProfileLoadTime",
   "-Command",
   "$PSStyle.OutputRendering='PlainText';",
 ]
-line-number = "relative"
-cursorline = true
-rulers = [80]
 true-color = true
 undercurl = true
-# bufferline = "multiple"
-bufferline = "always"
-color-modes = true
 
 [editor.lsp]
 display-messages = true
@@ -26,6 +71,7 @@ display-inlay-hints = true
 [editor.statusline]
 left = [
   "mode",
+  "selections",
   "spinner",
   # "separator", 
   "version-control",
@@ -86,26 +132,22 @@ enable = true
 
 [keys.insert]
 # Maps `jj` to exit insert mode as vim
-# j = { j = ["normal_mode", "move_char_left"] }
-j = { j = "normal_mode" }
+# j = { j = ["normal_mode", "move_char_left"] } 
+j = { j = "normal_mode", k = "normal_mode" }
+
+# shell shortcut 
 C-a = "goto_first_nonwhitespace"
 C-e = "goto_line_end_newline"
-# C-f = "move_char_right"
-# C-b = "move_char_left"
-# A-f = ["move_next_word_end"] # BUG
-# A-b = ["move_prev_word_start"] # BUG
-# C-u, C-k, C-h, C-d, C-w, A-d
+C-f = "move_char_right"
+C-b = "move_char_left"
 
-# "C-left" = "move_prev_word_end"
-# "A-f" = "move_next_word_start"
-# "C-right" = "move_next_word_start"
-# "C-space" = "completion"
-# "A-<" = "goto_file_start"
-# "A->" = "goto_file_end"
-# "pageup" = "page_up"
-# "pagedown" = "page_down"
-# "home" = "goto_line_start"
-# "end" = "goto_line_end_newline"
+# A-f = ["move_next_word_end"]   # BUG
+# A-b = ["move_prev_word_start"] # BUG
+
+# Origin: C-u, C-k, C-h, C-d, C-w, A-d
+# C-w is so confusing. Just C-h/A-h, C-d/A-d
+A-h = "delete_word_backward"
+
 # "C-;" = [
 #   "save_selection",
 #   "insert_at_line_end",
@@ -113,13 +155,21 @@ C-e = "goto_line_end_newline"
 #   "delete_char_forward",
 #   "jump_backward",
 # ]
-# "A-left" = "goto_line_start"
-# "A-right" = "goto_line_start"
 # " " = ["collapse_selection", ":insert-output printf ' '", "move_char_right"]
 
 [keys.normal]
+# `A-.`: Repeat last motion (f, t or m)
+# `.`: Repeat last insert
+d = ["change_selection", "normal_mode"]
 ret = ["move_line_down", "goto_first_nonwhitespace"]
-esc = ["collapse_selection", "keep_primary_selection"]
+# Use this binding too often, will forget to use Alt+Comma to remove primary
+# selection. 
+# Practice Comma and Semicolon to get skilled in complexed selection mode.
+# esc = ["collapse_selection", "keep_primary_selection"]
+
+C-s = ":w"
+C-m = "save_selection"
+C-q = ":q"
 
 # A-up = [
 #   "keep_primary_selection",
@@ -152,23 +202,28 @@ A-x = ["extend_line_up", "extend_to_line_bounds", "select_mode"]
 
 [keys.normal."space".c] # conifg
 o = ":config-open"
+l = ":o C:/Users/26523/AppData/Roaming/helix/languages.toml"
 r = ":config-reload"
 d = ":sh git diff"
 
-[keys.normal."space"."space"]
+[keys.normal."space"."space"] # function
+"space" = ":reload-all"
+
 c = ":toggle search.smart-case"
+f = [":sh firefox $PWD"]              # html, markdown preview
 i = ":toggle lsp.display-inlay-hints"
+
 l = ":toggle cursorline"
+L = ":toggle cursorcolumn"
+
+m = ":toggle mouse"
 r = ["split_selection_on_newline", ":rsort"]
 s = ["split_selection_on_newline", ":sort"]
-w = ":w"
-q = ":q"
 
 [keys.normal."space".t] # function
 h = ":theme dark_plus"
-# nord_light
-# papercolor-light
-H = ":theme spacebones_light"
+H = ":theme github_light_tritanopia"
+
 s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\""
 d = ":insert-output Get-Date -Format \"yyyy-MM-dd\""
 t = ":insert-output Get-Date -Format \"HH:mm:ss\""

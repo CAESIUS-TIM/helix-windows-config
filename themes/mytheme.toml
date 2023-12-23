@@ -1,0 +1,14 @@
+inherits = "gruvbox_dark_hard"
+
+"ui.cursor.primary" = { modifiers = ["rapid_blink", "reversed"] }
+"ui.selection.primary" = { modifiers = ["rapid_blink"], bg = "bg3" }
+
+# "ui.virtual.ruler" = { modifiers = ["reversed"] }
+"ui.virtual.ruler" = { bg = "dark_tianyi" }
+
+[palette]
+tianyi = "#66ccff"
+dark_tianyi = "#224455"
+# dark_tianyi = "#87cefa"
+miku = "#39c5bb"
+dark_miku = "#103328"
