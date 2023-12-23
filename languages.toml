@@ -1,22 +1,25 @@
-################################################################################
+###############################################################################
+# language
+###############################################################################
+#==============================================================================
 # c
-################################################################################
+#==============================================================================
 [[language]]
 name = "c"
 indent = { tab-width = 4, unit = "    " }
 auto-format = true
 
-################################################################################
+#==============================================================================
 # cpp
-################################################################################
+#==============================================================================
 [[language]]
 name = "cpp"
 indent = { tab-width = 4, unit = "    " }
 auto-format = true
 
-################################################################################
+#==============================================================================
 # config
-################################################################################
+#==============================================================================
 [[language]] # TODO: where come from?
 name = "config"
 comment-token = "#"
@@ -25,17 +28,17 @@ injection-regex = "^(conf|env(\\.\\w+)?)$"
 roots = []
 scope = "source.config"
 
-################################################################################
+#==============================================================================
 # json
-################################################################################
+#==============================================================================
 [[language]]
 name = "json"
 auto-format = true
 # config = { "provideFormatter" = true, "json" = { "keepLines" = { "enable" = true } } }
 
-################################################################################
+#==============================================================================
 # lfrc
-################################################################################
+#==============================================================================
 [[language]] # software custom
 name = "lfrc"
 scope = "source.lfrc"
@@ -44,9 +47,9 @@ comment-token = "#"
 roots = []
 indent = { tab-width = 4, unit = "    " }
 
-################################################################################
+#==============================================================================
 # lua
-################################################################################
+#==============================================================================
 [[language]]
 name = "lua"
 indent = { tab-width = 2, unit = "  " }
@@ -61,29 +64,36 @@ args = [
   "Spaces",
   "--column-width",
   "80",
+  "--line-endings",
+  "Windows",
   "--quote-style",
   "ForceSingle",
   "-",
 ]
 
-################################################################################
+#==============================================================================
 # markdown
-################################################################################
+#==============================================================================
 [[language]]
 name = "markdown"
 roots = [".marksman.toml"]
-language-servers = ["marksman", "ltex-ls"]
+# language-servers = ["marksman", "ltex-ls"]
+language-servers = ["marksman", "typos-lsp"]
 indent = { tab-width = 2, unit = "  " }
 formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
 auto-format = true
 
-[language-server.ltex-ls.config.ltex]
-disabledRules = { "en-US" = ["PROFANITY"] }
-dictionary = { "en-US" = ["builtin", "nonebot", "todo", "eval", "jupyter"] }
+#==============================================================================
+# nu
+#==============================================================================
+[[language]]
+name = "nu"
+language-servers = ["nu-lsp", "typos-lsp"]
+auto-format = true
 
-################################################################################
+#==============================================================================
 # powershell
-################################################################################
+#==============================================================================
 [[language]]
 name = "powershell"
 scope = "source.ps1"
@@ -92,53 +102,46 @@ roots = [".git"]
 comment-token = "#"
 indent = { tab-width = 4, unit = "    " }
 language-servers = ["powershell-editor-services"]
-
-[language-server.powershell-editor-services]
-command = "pwsh"
-args = [
-  "-NoLogo",
-  "-NoProfile",
-  "-Command",
-  "C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices\\Start-EditorServices.ps1 -BundledModulesPath C:\\projects\\powershell\\PowerShellEditorServices -SessionDetailsPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.sessions.json -LogPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal",
-]
+auto-format = true
 
 [[grammar]]
 name = "powershell"
 source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
 # source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "48f1a74725092281bd2b1606ad302100ffa537a9" }
 
-################################################################################
+#==============================================================================
 # python
-################################################################################
+#==============================================================================
 [[language]]
 name = "python"
 indent = { tab-width = 4, unit = "    " }
-language-servers = ["pyright", "ruff"]
+language-servers = ["pyright", "ruff", "typos-lsp"]
 auto-format = true
 
-[language-server.pyright.config.python.analysis]
-typeCheckingMode = "strict" # ["off", "basic", "strict"]
+# [language.formatter]
+# command = "cmd"
+# args = ["/c", "isort --profile black -l 80 -q - | black -l 80 -q -"]
 
-[language-server.ruff]
-command = "ruff-lsp"
-
-[language-server.ruff.config.settings]
-args = ["--ignore", "E501"]
-
-[language.formatter]
-command = "cmd"
-args = ["/c", "isort --profile black -l 80 -q - | black -l 80 -q -"]
-
-################################################################################
+#==============================================================================
 # rust
-################################################################################
+#==============================================================================
 [[language]]
 name = "rust"
 indent = { tab-width = 4, unit = "    " }
-language-servers = ["rust-analyzer"]
+language-servers = ["rust-analyzer", "typos-lsp"]
+auto-format = true
 
-[language-server.rust-analyzer.config.check]
-command = "clippy"
+[language.formatter]
+command = "rustfmt"
+args = [
+  "+nightly",
+  # "--config",
+  # "newline_style=Windows,max_width=80,match_block_trailing_comma=true,use_field_init_shorthand=true,use_try_shorthand=true",
+  "--config-path",
+  "C:/Users/26523/AppData/Roaming/helix/rustfmt.toml",
+  # "--edition",
+  # "2021",
+]
 
 [language.debugger]
 command = "codelldb"
@@ -149,6 +152,7 @@ transport = "tcp"
 [[language.debugger.templates]]
 name = "binary"
 request = "launch"
+
 [[language.debugger.templates.completion]]
 completion = "filename"
 name = "binary"
@@ -157,21 +161,200 @@ name = "binary"
 program = "{0}"
 runInTerminal = true
 
-################################################################################
+#==============================================================================
 # toml
-################################################################################
+#==============================================================================
 [[language]]
 name = "toml"
-formatter = { command = "taplo", args = ["fmt", "-"] }
-# language-servers = ["taplo", "ltex-ls"]
+formatter = { command = "taplo", args = ["fmt", "--option", "crlf=true", "-"] }
+language-servers = ["taplo", "typos-lsp"]
 auto-format = true
 
-################################################################################
+#==============================================================================
 # yaml
-################################################################################
+#==============================================================================
 [[language]]
 name = "yaml"
+language-servers = ["yaml-language-server", "typos-lsp"]
+auto-format = true
 
+###############################################################################
+# language-server
+###############################################################################
+#==============================================================================
+# ltex-ls
+#==============================================================================
+[language-server.ltex-ls.config.ltex]
+disabledRules = { "en-US" = ["PROFANITY"] }
+dictionary = { "en-US" = ["builtin", "nonebot", "todo", "eval", "jupyter"] }
+
+#==============================================================================
+# nu-lsp
+#==============================================================================
+[language-server.nu-lsp]
+command = "nu"
+args = ["--lsp"]
+
+#==============================================================================
+# powershell-editor-services
+#==============================================================================
+[language-server.powershell-editor-services]
+command = "pwsh"
+args = [
+  "-NoLogo",
+  "-NoProfile",
+  "-Command",
+  "C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices\\Start-EditorServices.ps1 -BundledModulesPath C:\\projects\\powershell\\PowerShellEditorServices -SessionDetailsPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.sessions.json -LogPath C:\\projects\\powershell\\PowerShellEditorServices\\PowerShellEditorServices.log -FeatureFlags @() -AdditionalModules @() -HostName helix -HostProfileId 0 -HostVersion 1.0.0 -Stdio -LogLevel Normal",
+]
+
+#==============================================================================
+# pyright
+#==============================================================================
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "strict" # ["off", "basic", "strict"]
+
+#==============================================================================
+# ruff
+#==============================================================================
+[language-server.ruff]
+command = "ruff"
+
+[language-server.ruff.config.settings]
+args = ["--ignore", "E501"]
+
+#==============================================================================
+# rust-analyzer
+#==============================================================================
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+# [language-server.rust-analyzer.config.rustfmt]
+# rangeFormatting.enable = true                                                                                     # unstable and only available on a nightly build
+# extraArgs = '["+nightly","--config-path","C:/Users/26523/AppData/Roaming/helix/rustfmt.toml","--edition","2021"]'
+
+# "max_width=80"
+# unstable:
+# "enum_discrim_align_threshold=20", "fn_single_line=true",
+# "format_code_in_doc_comments=true", "format_strings=true", 
+# "imports_layout=\"Vertical\"", "reorder_impl_items=true", 
+# "struct_field_align_threshold=20", "trailing_comma=\"Always\"",
+
+#==============================================================================
+# typos
+#==============================================================================
+# # [typos-vsocde](https://github.com/tekumara/typos-vscode)
+# ## Settings
+# This extension contributes the following settings:
+#   - typos.diagnosticSeverity: How typos are rendered in the editor, eg: as 
+#     errors, warnings, information, or hints.
+#   - typos.logLevel: Logging level of the language server. Logs appear in the 
+#     Output -> Typos pane.
+#   - typos.path: Path to the typos-lsp binary. If empty the bundled binary will
+#     be used.
+#   - typos.trace.server: Traces the communication between VS Code and the 
+#     language server. Recommended for debugging only.
+#
+# ## [`package.json`](https://github.com/tekumara/typos-vscode/blob/main/package.json)
+# ```jsonc
+# {
+#   // ...
+#   "contributes": {
+#     "commands": [
+#       {
+#         "category": "Typos",
+#         "command": "typos.restart",
+#         "title": "Restart"
+#       }
+#     ],
+#     "configuration": {
+#       "type": "object",
+#       "title": "Typos",
+#       "properties": {
+#         "typos.path": {
+#           "scope": "machine-overridable",
+#           "type": "string",
+#           "description": "Path to the `typos-lsp` binary. If empty the bundled binary will be used."
+#         },
+#         "typos.diagnosticSeverity": {
+#           "scope": "window",
+#           "type": "string",
+#           "enum": [
+#             "Error",
+#             "Warning",
+#             "Information",
+#             "Hint"
+#           ],
+#           "enumDescriptions": [
+#             "Red squiggle",
+#             "Yellow squiggle",
+#             "Blue squiggle",
+#             "Dots"
+#           ],
+#           "default": "Warning",
+#           "description": "How typos are rendered in the editor."
+#         },
+#         "typos.logLevel": {
+#           "scope": "window",
+#           "type": "string",
+#           "enum": [
+#             "off",
+#             "error",
+#             "warn",
+#             "info",
+#             "debug",
+#             "trace"
+#           ],
+#           "default": "warn",
+#           "markdownDescription": "Logging level of the language server. Logs appear in the _Output -> Typos_ pane."
+#         },
+#         "typos.trace.server": {
+#           "scope": "window",
+#           "type": "string",
+#           "enum": [
+#             "off",
+#             "messages",
+#             "verbose"
+#           ],
+#           "enumDescriptions": [
+#             "No traces",
+#             "Trace sent/received",
+#             "Includes content of messages"
+#           ],
+#           "default": "off",
+#           "description": "Traces the communication between VS Code and the language server. Recommended for debugging only."
+#         }
+#       }
+#     }
+#   },
+#   // ...
+# }
+# ```
+# [language-server.typos-lsp]
+# command = "typos-lsp"
+
+# [language-server.typos-lsp.config.typos] # BUG
+# diagnosticSeverity = "Hint" # ["Error", "Warning", "Information", "Hint"]
+# logLevel = "info"           # ["off", "error", "warn", "info", "debug", "trace"]
+
+#==============================================================================
+# cspell (fork)
+#==============================================================================
+# [vlabo/cspell-lsp](https://github.com/vlabo/cspell-lsp)
+# [language-server.cspell]
+# command = "cspell-lsp"
+# args = ["--stdio"]
+
+[language-server.typos-lsp]
+command = "cspell-lsp"
+args = ["--stdio"]
+
+[language-server.typos-lsp.config.cSpell]
+language = "en"
+words = ["lfrc"]
+
+#==============================================================================
+# yaml
+#==============================================================================
 [language-server.yaml-language-server.config.yaml]
 format = { enable = true }
 validation = true
