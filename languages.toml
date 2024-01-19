@@ -18,15 +18,21 @@ indent = { tab-width = 4, unit = "    " }
 auto-format = true
 
 #==============================================================================
-# config
+# dotenv
 #==============================================================================
-[[language]] # TODO: where come from?
-name = "config"
+[[language]]
+name = "dotenv"
+scope = "source.dotenv"
+injection-regex = "env(\\.\\w+)?"
+# injection-regex = "env"
+file-types = ["dotenv", "env"]
 comment-token = "#"
-file-types = ["env", "conf", "config"]
-injection-regex = "^(conf|env(\\.\\w+)?)$"
 roots = []
-scope = "source.config"
+language-servers = ["typos-lsp"]
+
+[[grammar]]
+name = "dotenv"
+source = { git = "https://github.com/EpocSquadron/tree-sitter-dotenv", rev = "d19d0193a3fee97f3fccecc98c8fbcf965b6f503" }
 
 #==============================================================================
 # json
@@ -79,7 +85,7 @@ name = "markdown"
 roots = [".marksman.toml"]
 # language-servers = ["marksman", "ltex-ls"]
 language-servers = ["marksman", "typos-lsp"]
-indent = { tab-width = 2, unit = "  " }
+indent = { tab-width = 4, unit = "    " }
 formatter = { command = "dprint", args = ["fmt", "--stdin", "md"] }
 auto-format = true
 
@@ -106,8 +112,8 @@ auto-format = true
 
 [[grammar]]
 name = "powershell"
-source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
-# source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "48f1a74725092281bd2b1606ad302100ffa537a9" }
+# source = { git = "https://github.com/PowerShell/tree-sitter-PowerShell", rev = "1ac090522cb339a6fd9d3ac915da01cb263d69e1" }
+source = { git = "https://github.com/airbus-cert/tree-sitter-powershell", rev = "48f1a74725092281bd2b1606ad302100ffa537a9" }
 
 #==============================================================================
 # python
@@ -138,7 +144,7 @@ args = [
   # "--config",
   # "newline_style=Windows,max_width=80,match_block_trailing_comma=true,use_field_init_shorthand=true,use_try_shorthand=true",
   "--config-path",
-  "C:/Users/26523/AppData/Roaming/helix/rustfmt.toml",
+  "~/AppData/Roaming/helix/rustfmt.toml",
   # "--edition",
   # "2021",
 ]
@@ -230,7 +236,7 @@ command = "clippy"
 
 # [language-server.rust-analyzer.config.rustfmt]
 # rangeFormatting.enable = true                                                                                     # unstable and only available on a nightly build
-# extraArgs = '["+nightly","--config-path","C:/Users/26523/AppData/Roaming/helix/rustfmt.toml","--edition","2021"]'
+# extraArgs = '["+nightly","--config-path","~/AppData/Roaming/helix/rustfmt.toml","--edition","2021"]'
 
 # "max_width=80"
 # unstable:

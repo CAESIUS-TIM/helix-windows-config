@@ -1,66 +1,21 @@
-# # opacity
-# ## dark
-# - adwaita-dark
-# - ayu_dark
-# - catppuccin_frappe
-# - darcula
-# - darcula-solid
-# - dark_plus
-# - everforest_dark
-# - github_dark
-# - github_dark_colorblind
-# - github_dark_dimmed
-# - gruvbox
-# - gruvbox_dark_hard
-# - gruvbox_dark_soft
-# - hex_toxic
-# - new_moon
-# - nightfox
-# - noctis
-# - nord
-# - nord-night
-# - onedark
-# - onedarker
-# - snazzy (primary selection is very clear)
-# - solarized_dark
-# - sonokai
-# ## light
-# no theme is ok... QwQ
-# - cyan_light
-#
-# # not opacity
-# ## dark
-# - catppuccin_frappe
-# - dark_plus
-# TODO
-# ## light
-# - nord_light
-# - papercolor-light
-# - spacebones_light
-#
-# # interesting
-# - base16_transparent
-# - heisenberg
-theme = "darcula-solid"
-# theme = "snazzy"
-# theme = "catppuccin_frappe"
-# theme = "dark_plus"
+theme = "mytheme"
 
 [editor]
-# bufferline = "always"
-bufferline = "multiple"
+auto-format = false
+bufferline = "always"
 color-modes = true
 cursorline = true
 line-number = "relative"
 mouse = false
 rulers = [80, 120]
-shell = [
-  "pwsh.exe",
-  "-NoLogo",
-  "-NoProfileLoadTime",
-  "-Command",
-  "$PSStyle.OutputRendering='PlainText';",
-]
+# shell = [
+#   "pwsh.exe",
+#   "-NoLogo",
+#   "-NoProfileLoadTime",
+#   "-Command",
+#   "$PSStyle.OutputRendering='PlainText';",
+# ]
+shell = ["nu", "-l", "-c"]
 true-color = true
 undercurl = true
 
@@ -71,13 +26,16 @@ display-inlay-hints = true
 [editor.statusline]
 left = [
   "mode",
-  "selections",
   "spinner",
   # "separator", 
   "version-control",
-  # "separator",
+  "spacer",
+  "separator",           # <-
+  "read-only-indicator",
+  # "file-type-icon",
   "file-name",
   "file-modification-indicator",
+  "register",
 ]
 center = []
 right = [
@@ -95,7 +53,7 @@ right = [
   "file-line-ending",
   "file-type",
 ]
-separator = ""
+separator = "│"
 
 [editor.cursor-shape]
 insert = "bar"
@@ -107,16 +65,19 @@ hidden = true
 git-ignore = true
 
 [editor.whitespace.render]
+space = "all"
 nbsp = "all"
 tab = "all"
-newline = "none"
+newline = "all"
 
 [editor.whitespace.characters]
 space = "·"
 nbsp = "⍽"
-tab = "→"
-newline = "⏎"
+# tab = "→"
+# newline = "⏎"
 tabpad = "·"  # Tabs will look like "→···" (depending on tab width)
+newline = "↴"
+tab = "⇥"
 
 [editor.indent-guides]
 render = true
@@ -131,10 +92,23 @@ enable = true
 ################################################################################
 
 [keys.insert]
+#-------------------------------------------------------------------------------
+# basic
+C-m = "save_selection"
+C-q = ":q"
+C-s = ":w"
+C-r = ":reload"
+
 # Maps `jj` to exit insert mode as vim
 # j = { j = ["normal_mode", "move_char_left"] } 
 j = { j = "normal_mode", k = "normal_mode" }
+# j = { j = [":pipe-to im-select 1033", "normal_mode"], k = [":pipe-to im-select 1033", "normal_mode"] }
+# esc = [":pipe-to im-select 1033", "normal_mode"]
+esc = ["normal_mode"]
+# "C-[" = [":pipe-to im-select 1033", "normal_mode"]
+"C-[" = ["normal_mode"]
 
+#-------------------------------------------------------------------------------
 # shell shortcut 
 C-a = "goto_first_nonwhitespace"
 C-e = "goto_line_end_newline"
@@ -145,31 +119,51 @@ C-b = "move_char_left"
 # A-b = ["move_prev_word_start"] # BUG
 
 # Origin: C-u, C-k, C-h, C-d, C-w, A-d
-# C-w is so confusing. Just C-h/A-h, C-d/A-d
-A-h = "delete_word_backward"
+# C-h/C-w, C-d/A-d
 
-# "C-;" = [
-#   "save_selection",
-#   "insert_at_line_end",
-#   ":append-output echo ';'",
-#   "delete_char_forward",
-#   "jump_backward",
-# ]
+#-------------------------------------------------------------------------------
+# append ; for rust/c/cpp/...
+# BUG: when use more than once (but in fact, almost always use once)
+"C-;" = [
+  "save_selection",
+  "insert_at_line_end",
+  ":insert-output busybox echo -n ';'",
+  # "delete_char_forward",
+  "jump_backward",
+]
+
 # " " = ["collapse_selection", ":insert-output printf ' '", "move_char_right"]
 
 [keys.normal]
+#-------------------------------------------------------------------------------
+# basic
+C-m = "save_selection"
+C-q = ":q"
+C-s = ":w"
+C-r = ":reload"
+
+# esc = [":pipe-to im-select 1033", "normal_mode"]
+esc = ["normal_mode"]
+
+#-------------------------------------------------------------------------------
+# append ; for rust/c/cpp/...
+"C-;" = [
+  "save_selection",
+  "goto_line_end",
+  ":append-output busybox echo -n ';'",
+  # "delete_char_forward",
+  "jump_backward",
+]
+
 # `A-.`: Repeat last motion (f, t or m)
 # `.`: Repeat last insert
-d = ["change_selection", "normal_mode"]
+# d = ["change_selection", "normal_mode"]
+
 ret = ["move_line_down", "goto_first_nonwhitespace"]
 # Use this binding too often, will forget to use Alt+Comma to remove primary
 # selection. 
 # Practice Comma and Semicolon to get skilled in complexed selection mode.
 # esc = ["collapse_selection", "keep_primary_selection"]
-
-C-s = ":w"
-C-m = "save_selection"
-C-q = ":q"
 
 # A-up = [
 #   "keep_primary_selection",
@@ -195,46 +189,135 @@ C-q = ":q"
 # ]
 
 # F5 = ""
-A-x = ["extend_line_up", "extend_to_line_bounds", "select_mode"]
+
+# Better extend line, Shift Key to cancel
+x = "extend_line_below"
+A-x = "extend_line_above"
+A-X = ["extend_line_down", "extend_to_line_bounds"]
+X = ["extend_line_up", "extend_to_line_bounds"]
 
 [keys.select]
-A-x = ["extend_line_up", "extend_to_line_bounds", "select_mode"]
+#-------------------------------------------------------------------------------
+# basic
+C-m = "save_selection"
+C-q = ":q"
+C-s = ":w"
+C-r = ":reload"
+
+# esc = [":pipe-to im-select 1033", "normal_mode"]
+esc = ["normal_mode"]
+
+#-------------------------------------------------------------------------------
+x = "extend_line_below"
+A-x = "extend_line_above"
+A-X = ["extend_line_down", "extend_to_line_bounds"]
+X = ["extend_line_up", "extend_to_line_bounds"]
+
+
+[keys.normal."space"] # terminal
+"`" = ":sh wezterm cli split-pane"
+
+[keys.normal."C-w"]
+c = ":bc"
+C = ":bca"
+O = ":bco"
+
+[keys.normal."space".w]
+c = ":bc"
+C = ":bca"
+O = ":bco"
 
 [keys.normal."space".c] # conifg
+# config
 o = ":config-open"
-l = ":o C:/Users/26523/AppData/Roaming/helix/languages.toml"
+l = ":o ~/AppData/Roaming/helix/languages.toml"
+t = ":o ~/AppData/Roaming/helix/themes/mytheme.toml"
 r = ":config-reload"
-d = ":sh git diff"
 
-[keys.normal."space"."space"] # function
-"space" = ":reload-all"
+[keys.normal."space"."space"] # format, setting
+"space" = [":fmt"]
 
-c = ":toggle search.smart-case"
-f = [":sh firefox $PWD"]              # html, markdown preview
-i = ":toggle lsp.display-inlay-hints"
-
+c = ":toggle search.smart-case"                # case (search)
+i = ":toggle lsp.display-inlay-hints"          # inlay
+m = ":toggle mouse"                            # mouse
+s = ":toggle whitespace.render.space none all" # space
+f = ":toggle auto-format"                      # format
+# cursor
 l = ":toggle cursorline"
 L = ":toggle cursorcolumn"
 
-m = ":toggle mouse"
-r = ["split_selection_on_newline", ":rsort"]
-s = ["split_selection_on_newline", ":sort"]
+[keys.normal."space".G]
+L = ":sh wezterm cli split-pane lazygit" # Lazygit
+I = ":sh git init"                       # Init
+d = ":sh git diff"                       # diff
+g = ":sh git log --oneline --graph"      # graph (log)
+l = ":sh git log -p"                     # log
+s = ":sh git status"                     # status
+t = ":sh git tag"                        # tag
 
-[keys.normal."space".t] # function
-h = ":theme dark_plus"
-H = ":theme github_light_tritanopia"
+[keys.normal."space".u] # function1: reload, sort, preview
+"space" = ":reload-all"
+#sort
+s = ["split_selection_on_newline", ":sort"]  # sort
+r = ["split_selection_on_newline", ":rsort"] # reverse sort
+#wrap
+# w = ":reflow 80"
+w = ":reflow"     # reflow
+W = ":reflow 120" # reflow 120
+#preview
+p = ":sh firefox $PWD" # html, markdown preview (shell: pwsh, nu)
+# t = ":sh typos || $null" # typos-lsp is configured.(shell: pwsh)
+t = ":sh try { typos }" # typos-lsp is configured.(shell: nu)
+# TODO: `cspell --words-only --unique "**/*.md" | sort --ignore-case >> project-words.txt || $null`
+# TODO: `cspell --no-progress --show-suggestions --show-context "**/*.md" || $null`
 
-s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\""
-d = ":insert-output Get-Date -Format \"yyyy-MM-dd\""
-t = ":insert-output Get-Date -Format \"HH:mm:ss\""
+# better search: zh-CN, jp
+# zh-CN characters:
+# - <https://en.wikipedia.org/wiki/CJK_Unified_Ideographs>
+# - <https://www.cnblogs.com/sosoft/p/3456631.html>
+# z = "search \\p{Han}"
+# zh-CN punctuations:
+# - <https://en.wikipedia.org/wiki/Chinese_punctuation>
+# - <https://blog.csdn.net/COCO56/article/details/87618925>
+# <utils/chinese_punctuations.py>
+# Z = "search \\u2013|\\u2014|\\u2018|\\u2019|\\u201c|\\u201d|\\u2026|\\u3001|\\u3002|\\u3008|\\u3009|\\u300a|\\u300b|\\u300c|\\u300d|\\u300e|\\u300f|\\u3010|\\u3011|\\u3014|\\u3015|\\uff01|\\uff08|\\uff09|\\uff0c|\\uff0e|\\uff1a|\\uff1b|\\uff1f|\\u00b7"
+# jp: <https://stackoverflow.com/questions/19899554/unicode-range-for-japanese>
+# j = "search [\\p{Hiragana}\\p{Katakana}]"
+# J = "search [\\u3000-\\u303f]"
+
+[keys.normal."space".t] # function2: theme, time, info
+# theme
+# issue : [Feature Request] toggle theme theme1 theme2
+h = ":theme mytheme"                 # theme (dark)
+H = ":theme github_light_tritanopia" # theme (light)
+# time
+# shell: pwsh
+# s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\"" # stamp
+# d = ":insert-output Get-Date -Format \"yyyy-MM-dd\""          # date
+# t = ":insert-output Get-Date -Format \"HH:mm:ss\""            # time
+s = ":insert-output date now | format date \"%Y-%m-%d %H:%M:%S\"" # stamp
+d = ":insert-output date now | format date \"%Y-%m-%d\""          # date
+t = ":insert-output date now | format date \"%H:%M:%S\""          # time
+
+# info
+c = ":insert-output echo \"timxing2000@foxmail.com\""        # TODO: header comment
 e = ":insert-output echo \"timxing2000@foxmail.com\""
+g = ":insert-output echo \"https://github.com/CAESIUS-TIM\""
 
 [keys.normal."space".i]
-i = [":toggle file-picker.hidden"]
-g = [":toggle file-picker.git-ignore"]
+i = ":toggle file-picker.hidden"     # ignore (hidden)
+g = ":toggle file-picker.git-ignore" # git
 
 [keys.normal."space".l] # lang
-r = ":sh cargo run"
-b = { u = ":sh cargo build", r = ":sh cargo build --release" }
-c = ":sh cargo clippy || $null"
-t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null", y = ":sh typos || $null" }
+r = ":sh cargo run"             # run
+R = ":sh cargo run --release"   # Run release
+b = ":sh cargo build"           # build
+B = ":sh cargo build --release" # Build release
+# t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null" } # (shell: pwsh)
+t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh try { cargo tarpaulin }" } # (shell: nu)
+# wezterm version
+# r = ":sh wezterm cli split-pane cargo run"
+# R = ":sh wezterm cli split-pane cargo run --release"
+# b = ":sh cargo build"
+# B = ":sh cargo build --release"
+# t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null" }
