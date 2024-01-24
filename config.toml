@@ -1,7 +1,10 @@
+################################################################################
+# Config
+################################################################################
 theme = "my_theme_dark"
 
 [editor]
-auto-format = false
+auto-format = false # TODO
 bufferline = "always"
 color-modes = true
 cursorline = true
@@ -15,7 +18,8 @@ rulers = [80, 120]
 #   "-Command",
 #   "$PSStyle.OutputRendering='PlainText';",
 # ]
-shell = ["nu", "-l", "-c"]
+# shell = ["nu", "-c"]
+shell = ["fish", "-c"]
 true-color = true
 undercurl = true
 
@@ -88,9 +92,8 @@ skip-levels = 1
 enable = true
 
 ################################################################################
-### Key mapping
+# Key mapping
 ################################################################################
-
 [keys.insert]
 #-------------------------------------------------------------------------------
 # basic
@@ -291,16 +294,22 @@ t = ":sh try { typos }" # typos-lsp is configured.(shell: nu)
 h = ":theme my_theme_dark"                 # theme (dark)
 H = ":theme my_theme_light" # theme (light)
 # time
-# shell: pwsh
+# @shell pwsh
 # s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\"" # stamp
 # d = ":insert-output Get-Date -Format \"yyyy-MM-dd\""          # date
 # t = ":insert-output Get-Date -Format \"HH:mm:ss\""            # time
-s = ":insert-output date now | format date \"%Y-%m-%d %H:%M:%S\"" # stamp
-d = ":insert-output date now | format date \"%Y-%m-%d\""          # date
-t = ":insert-output date now | format date \"%H:%M:%S\""          # time
+# @shell nu
+# s = ":insert-output date now | format date \"%Y-%m-%d %H:%M:%S\"" # stamp
+# d = ":insert-output date now | format date \"%Y-%m-%d\""          # date
+# t = ":insert-output date now | format date \"%H:%M:%S\""          # time
+# @shell sh
+s = ":insert-output date \"+%Y-%m-%d %H:%M:%S\"" # stamp
+d = ":insert-output date \"+%Y-%m-%d\"" # date
+t = ":insert-output date \"+%H:%M:%S\"" # time
 
 # info
-c = ":insert-output echo \"timxing2000@foxmail.com\""        # TODO: header comment
+# @shell sh
+c = ":insert-output echo \"@Author       CAESIUS-TIM\n@Github       https://github.com/CAESIUS-TIM\n@Date         $(date \"+%Y-%m-%d %H:%M:%S\")\n@LastEditors\n@LastEditTime\n@Description\""
 e = ":insert-output echo \"timxing2000@foxmail.com\""
 g = ":insert-output echo \"https://github.com/CAESIUS-TIM\""
 
@@ -313,11 +322,14 @@ r = ":sh cargo run"             # run
 R = ":sh cargo run --release"   # Run release
 b = ":sh cargo build"           # build
 B = ":sh cargo build --release" # Build release
-# t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null" } # (shell: pwsh)
-t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh try { cargo tarpaulin }" } # (shell: nu)
-# wezterm version
+# @shell pwsh
+# t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null" }
+# @shell nu
+t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh try { cargo tarpaulin }" }
+# @wezterm
 # r = ":sh wezterm cli split-pane cargo run"
 # R = ":sh wezterm cli split-pane cargo run --release"
 # b = ":sh cargo build"
 # B = ":sh cargo build --release"
+# @shell pwsh
 # t = { t = ":sh cargo test", i = ":sh cargo test -- --ignored", c = ":sh cargo tarpaulin || $null" }
