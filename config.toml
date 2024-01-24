@@ -4,7 +4,8 @@
 theme = "my_theme_dark"
 
 [editor]
-auto-format = false # TODO
+auto-format = false
+auto-save = true
 bufferline = "always"
 color-modes = true
 cursorline = true
@@ -96,15 +97,9 @@ enable = true
 ################################################################################
 [keys.insert]
 #-------------------------------------------------------------------------------
-# basic
-C-m = "save_selection"
-C-q = ":q"
-C-s = ":w"
-C-r = ":reload"
-
 # Maps `jj` to exit insert mode as vim
 # j = { j = ["normal_mode", "move_char_left"] } 
-j = { j = "normal_mode", k = "normal_mode" }
+# j = { j = "normal_mode", k = "normal_mode" }
 # j = { j = [":pipe-to im-select 1033", "normal_mode"], k = [":pipe-to im-select 1033", "normal_mode"] }
 # esc = [":pipe-to im-select 1033", "normal_mode"]
 esc = ["normal_mode"]
@@ -142,7 +137,7 @@ C-b = "move_char_left"
 # basic
 C-m = "save_selection"
 C-q = ":q"
-C-s = ":w"
+C-s = ":fmt"
 C-r = ":reload"
 
 # esc = [":pipe-to im-select 1033", "normal_mode"]
@@ -204,7 +199,7 @@ X = ["extend_line_up", "extend_to_line_bounds"]
 # basic
 C-m = "save_selection"
 C-q = ":q"
-C-s = ":w"
+C-s = ":fmt"
 C-r = ":reload"
 
 # esc = [":pipe-to im-select 1033", "normal_mode"]
@@ -233,18 +228,28 @@ O = ":bco"
 [keys.normal."space".c] # conifg
 # config
 o = ":config-open"
-l = ":o ~/AppData/Roaming/helix/languages.toml"
-t = ":o ~/AppData/Roaming/helix/themes/mytheme.toml"
+# @os windows
+# l = ":o ~/AppData/Roaming/helix/languages.toml"
+# t = ":o ~/AppData/Roaming/helix/themes/my_theme_dark.toml"
+# T = ":o ~/AppData/Roaming/helix/themes/my_theme_light.toml"
+# @os unix
+l = ":o ~/.config/helix/languages.toml"
+t = ":o ~/.config/helix/themes/my_theme_dark.toml"
+T = ":o ~/.config/helix/themes/my_theme_light.toml"
 r = ":config-reload"
 
-[keys.normal."space"."space"] # format, setting
-"space" = [":fmt"]
+[keys.normal."space"."space"] # reload files, setting
+"space" = ":reload-all"
 
-c = ":toggle search.smart-case"                # case (search)
-i = ":toggle lsp.display-inlay-hints"          # inlay
-m = ":toggle mouse"                            # mouse
-s = ":toggle whitespace.render.space none all" # space
-f = ":toggle auto-format"                      # format
+c = ":toggle search.smart-case"                                                                                            # case (search)
+i = ":toggle lsp.display-inlay-hints"                                                                                      # inlay
+m = ":toggle mouse"                                                                                                        # mouse
+s = ":toggle whitespace.render.space none all"                                                                             # space
+ret = ":toggle whitespace.render.newline none all"                                                                         # newline
+tab = ":toggle whitespace.render.tab none all"                                                                             # tab
+r = ":set whitespace.render {\"default\":null,\"nbsp\":\"all\",\"newline\":\"all\",\"space\":\"all\",\"tab\":\"all\"}"
+R = ":set whitespace.render {\"default\":null,\"nbsp\":\"none\",\"newline\":\"none\",\"space\":\"none\",\"tab\":\"none\"}"
+f = ":toggle auto-format"                                                                                                  # format
 # cursor
 l = ":toggle cursorline"
 L = ":toggle cursorcolumn"
@@ -274,24 +279,10 @@ t = ":sh try { typos }" # typos-lsp is configured.(shell: nu)
 # TODO: `cspell --words-only --unique "**/*.md" | sort --ignore-case >> project-words.txt || $null`
 # TODO: `cspell --no-progress --show-suggestions --show-context "**/*.md" || $null`
 
-# better search: zh-CN, jp
-# zh-CN characters:
-# - <https://en.wikipedia.org/wiki/CJK_Unified_Ideographs>
-# - <https://www.cnblogs.com/sosoft/p/3456631.html>
-# z = "search \\p{Han}"
-# zh-CN punctuations:
-# - <https://en.wikipedia.org/wiki/Chinese_punctuation>
-# - <https://blog.csdn.net/COCO56/article/details/87618925>
-# <utils/chinese_punctuations.py>
-# Z = "search \\u2013|\\u2014|\\u2018|\\u2019|\\u201c|\\u201d|\\u2026|\\u3001|\\u3002|\\u3008|\\u3009|\\u300a|\\u300b|\\u300c|\\u300d|\\u300e|\\u300f|\\u3010|\\u3011|\\u3014|\\u3015|\\uff01|\\uff08|\\uff09|\\uff0c|\\uff0e|\\uff1a|\\uff1b|\\uff1f|\\u00b7"
-# jp: <https://stackoverflow.com/questions/19899554/unicode-range-for-japanese>
-# j = "search [\\p{Hiragana}\\p{Katakana}]"
-# J = "search [\\u3000-\\u303f]"
-
 [keys.normal."space".t] # function2: theme, time, info
 # theme
 # issue : [Feature Request] toggle theme theme1 theme2
-h = ":theme my_theme_dark"                 # theme (dark)
+h = ":theme my_theme_dark"  # theme (dark)
 H = ":theme my_theme_light" # theme (light)
 # time
 # @shell pwsh
@@ -304,8 +295,8 @@ H = ":theme my_theme_light" # theme (light)
 # t = ":insert-output date now | format date \"%H:%M:%S\""          # time
 # @shell sh
 s = ":insert-output date \"+%Y-%m-%d %H:%M:%S\"" # stamp
-d = ":insert-output date \"+%Y-%m-%d\"" # date
-t = ":insert-output date \"+%H:%M:%S\"" # time
+d = ":insert-output date \"+%Y-%m-%d\""          # date
+t = ":insert-output date \"+%H:%M:%S\""          # time
 
 # info
 # @shell sh
