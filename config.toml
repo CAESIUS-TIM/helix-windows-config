@@ -1,4 +1,4 @@
-theme = "mytheme"
+theme = "my_theme_dark"
 
 [editor]
 auto-format = false
@@ -288,8 +288,8 @@ t = ":sh try { typos }" # typos-lsp is configured.(shell: nu)
 [keys.normal."space".t] # function2: theme, time, info
 # theme
 # issue : [Feature Request] toggle theme theme1 theme2
-h = ":theme mytheme"                 # theme (dark)
-H = ":theme github_light_tritanopia" # theme (light)
+h = ":theme my_theme_dark"                 # theme (dark)
+H = ":theme my_theme_light" # theme (light)
 # time
 # shell: pwsh
 # s = ":insert-output Get-Date -Format \"yyyy-MM-dd HH:mm:ss\"" # stamp
